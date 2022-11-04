@@ -29,6 +29,13 @@
             {
               "client_id": "666347764447-081v7n5jrutk5cdgt1isrohttjsqb213.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "666347764447-lrrnugbkiobgi3vpc8nk1mu1jp2581ld.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.todoFirestore"
+              }
             }
           ]
         }
