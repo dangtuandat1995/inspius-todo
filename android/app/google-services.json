@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "666347764447",
+    "project_id": "inspius-todo",
+    "storage_bucket": "inspius-todo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666347764447:android:6985a78587fab9f0d2476a",
+        "android_client_info": {
+          "package_name": "com.example.todo_firestore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666347764447-081v7n5jrutk5cdgt1isrohttjsqb213.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDASqlos_iuTKvosiseAQqATe18_LWWFUQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666347764447-081v7n5jrutk5cdgt1isrohttjsqb213.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
