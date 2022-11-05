@@ -37,10 +37,7 @@ class _HomePageState extends State<HomePage> {
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
+          dismissKeyboard(context);
         },
         child: SafeArea(
           child: Padding(
@@ -74,10 +71,7 @@ class _HomePageState extends State<HomePage> {
           FloatingActionButton(
             heroTag: 'navigate to do page',
             onPressed: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
+              dismissKeyboard(context);
 
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const TodoPage(),
@@ -88,10 +82,7 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 20),
           FloatingActionButton(
             onPressed: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
+              dismissKeyboard(context);
 
               context
                   .read<HomeBloc>()
@@ -108,5 +99,12 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> getInitCurrentPage() async {
     currentPage = await localStorage.getHomeRequestPage();
+  }
+
+  void dismissKeyboard(BuildContext context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
   }
 }
