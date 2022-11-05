@@ -4,8 +4,7 @@ import 'package:todo_firestore/core/shared_preferences/shared_preference_manager
 import 'package:todo_firestore/features/home/presentation/bloc/home_bloc.dart';
 import 'package:todo_firestore/features/home/presentation/provider/home_provider.dart';
 import 'package:todo_firestore/features/home/presentation/widgets/home_list_images.dart';
-
-// TODO: implement local cache
+import 'package:todo_firestore/features/todo/presentation/page/todo_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -69,18 +68,40 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: 'navigate to do page',
+            onPressed: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
 
-          context.read<HomeBloc>().add(GetImageInfoEvent(page: currentPage));
-          currentPage++;
-          localStorage.setHomeRequestPage(currentPage);
-        },
-        child: const Icon(Icons.add),
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const TodoPage(),
+              ));
+            },
+            child: const Icon(Icons.toc_outlined),
+          ),
+          const SizedBox(height: 20),
+          FloatingActionButton(
+            onPressed: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+
+              context
+                  .read<HomeBloc>()
+                  .add(GetImageInfoEvent(page: currentPage));
+              currentPage++;
+              localStorage.setHomeRequestPage(currentPage);
+            },
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }

@@ -39,6 +39,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
+  flutter_slidable: ^2.0.0
   get_it: ^7.2.0
   http: ^0.13.5
   injectable: ^1.5.4
