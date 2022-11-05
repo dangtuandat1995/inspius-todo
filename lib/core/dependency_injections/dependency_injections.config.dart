@@ -17,7 +17,7 @@ import '../../features/home/domain/repository/home_repository.dart' as _i12;
 import '../../features/home/domain/usecases/get_image_info.dart' as _i16;
 import '../../features/home/presentation/bloc/home_bloc.dart' as _i17;
 import '../../features/todo/data/data_source/todo_data_source.dart' as _i5;
-import '../../features/todo/data/todo_repository_impl.dart' as _i7;
+import '../../features/todo/data/repository/todo_repository_impl.dart' as _i7;
 import '../../features/todo/domain/repository/todo_repository.dart' as _i6;
 import '../../features/todo/domain/usecases/create_task.dart' as _i9;
 import '../../features/todo/domain/usecases/delete_task.dart' as _i10;

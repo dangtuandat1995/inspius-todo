@@ -6,7 +6,7 @@ import 'package:todo_firestore/core/failures/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:todo_firestore/features/todo/domain/repository/todo_repository.dart';
 
-import 'models/user_task_model.dart';
+import '../models/user_task_model.dart';
 
 @Injectable(as: TodoRepository)
 class TodoRepositoryImpl extends TodoRepository {
