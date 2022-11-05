@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_firestore/features/todo/presentation/bloc/todo_bloc.dart';
+import 'package:todo_firestore/features/todo/presentation/provider/todo_provider.dart';
 
 import '../../domain/entities/user_task.dart';
-import '../../domain/usecases/delete_task.dart';
-import '../../domain/usecases/read_task.dart';
-import '../../domain/usecases/update_task.dart';
 import 'task_dialog.dart';
 
 class TodoTabView extends StatefulWidget {
@@ -15,18 +15,15 @@ class TodoTabView extends StatefulWidget {
   State<TodoTabView> createState() => _TodoTabViewState();
 }
 
-class _TodoTabViewState extends State<TodoTabView> {
-  final updateTask = UpdateTask();
-  final readTask = ReadTask();
-  final deleteTask = DeleteTask();
+class _TodoTabViewState extends State<TodoTabView>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<UserTask>>(
-      initialData: const [],
-      stream: readTask(),
-      builder: (context, snapshot) {
-        if (snapshot.data == null) return const SizedBox();
-        final todos = snapshot.data!
+    super.build(context);
+    return Selector<TodoProvider, List<UserTask>>(
+      selector: (_, provider) => provider.tasks,
+      builder: (context, tasks, child) {
+        final filteredTasks = tasks
             .where(
               (element) => element.taskStatus == widget.taskStatus,
             )
@@ -34,7 +31,7 @@ class _TodoTabViewState extends State<TodoTabView> {
 
         return ListView.separated(
           itemBuilder: (context, index) {
-            final todo = todos[index];
+            final todo = filteredTasks[index];
             return Slidable(
               endActionPane: ActionPane(
                 extentRatio: 0.2,
@@ -42,7 +39,9 @@ class _TodoTabViewState extends State<TodoTabView> {
                 children: [
                   SlidableAction(
                     onPressed: (context) {
-                      deleteTask(todo.id);
+                      context.read<TodoBloc>().add(DeleteTaskEvent(
+                            task: todo,
+                          ));
                     },
                     label: 'Delete',
                     icon: Icons.delete,
@@ -58,14 +57,17 @@ class _TodoTabViewState extends State<TodoTabView> {
                       ? const Icon(Icons.check_box_outline_blank)
                       : const Icon(Icons.check_box, color: Colors.green),
                   onPressed: () {
-                    updateTask(UserTask(
-                      id: todo.id,
-                      taskTitle: todo.taskTitle,
-                      taskDesc: todo.taskDesc,
-                      taskStatus: widget.taskStatus == TaskStatus.unfinished
-                          ? TaskStatus.complete
-                          : TaskStatus.unfinished,
-                    ));
+                    context.read<TodoBloc>().add(UpdateTaskEvent(
+                          task: UserTask(
+                            id: todo.id,
+                            taskTitle: todo.taskTitle,
+                            taskDesc: todo.taskDesc,
+                            taskStatus:
+                                widget.taskStatus == TaskStatus.unfinished
+                                    ? TaskStatus.complete
+                                    : TaskStatus.unfinished,
+                          ),
+                        ));
                   },
                 ),
                 trailing: widget.taskStatus == TaskStatus.unfinished
@@ -90,9 +92,12 @@ class _TodoTabViewState extends State<TodoTabView> {
           separatorBuilder: (_, __) {
             return const SizedBox(height: 10);
           },
-          itemCount: todos.length,
+          itemCount: filteredTasks.length,
         );
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

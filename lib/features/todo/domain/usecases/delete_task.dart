@@ -1,8 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:injectable/injectable.dart';
+import 'package:todo_firestore/core/failures/failure.dart';
+import 'package:dartz/dartz.dart';
+import 'package:todo_firestore/core/usecase/usecase.dart';
+import 'package:todo_firestore/features/todo/domain/repository/todo_repository.dart';
 
-class DeleteTask {
-  Future<void> call(String taskId) async {
-    final doc = FirebaseFirestore.instance.collection('todo').doc(taskId);
-    await doc.delete();
+import '../entities/user_task.dart';
+
+@injectable
+class DeleteTask extends Usecase<void, UserTask> {
+  final TodoRepository repository;
+
+  DeleteTask({required this.repository});
+  @override
+  Future<Either<Failure, void>> call(UserTask param) async {
+    return repository.deleteTask(param);
   }
 }

@@ -1,16 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo_firestore/features/todo/data/models/user_task_model.dart';
+import 'package:injectable/injectable.dart';
+import 'package:todo_firestore/core/failures/failure.dart';
+import 'package:dartz/dartz.dart';
+import 'package:todo_firestore/core/usecase/usecase.dart';
 import 'package:todo_firestore/features/todo/domain/entities/user_task.dart';
+import 'package:todo_firestore/features/todo/domain/repository/todo_repository.dart';
 
-class CreateTask {
-  Future<void> call(UserTask task) async {
-    final doc = FirebaseFirestore.instance.collection('todo').doc();
-    final taskWithId = UserTaskModel(
-      id: doc.id,
-      taskTitle: task.taskTitle,
-      taskDesc: task.taskDesc,
-      taskStatus: task.taskStatus,
-    );
-    await doc.set(taskWithId.toJson());
+@injectable
+class CreateTask extends Usecase<void, UserTask> {
+  final TodoRepository repository;
+
+  CreateTask({required this.repository});
+
+  @override
+  Future<Either<Failure, void>> call(UserTask param) async {
+    return repository.createTask(param);
   }
 }

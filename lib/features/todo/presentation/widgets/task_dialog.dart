@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_firestore/features/todo/domain/usecases/create_task.dart';
-import 'package:todo_firestore/features/todo/domain/usecases/update_task.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_firestore/features/todo/presentation/bloc/todo_bloc.dart';
 
 import '../../domain/entities/user_task.dart';
 
@@ -19,9 +19,6 @@ class _TaskDialogState extends State<TaskDialog> {
   late final TextEditingController descController;
   late final String dialogTitle;
   late final bool isCreateNewTask;
-
-  final createTask = CreateTask();
-  final updateTask = UpdateTask();
 
   @override
   void initState() {
@@ -73,14 +70,15 @@ class _TaskDialogState extends State<TaskDialog> {
     if (isCreateNewTask) {
       return [
         TextButton(
-          onPressed: () async {
-            await createTask(UserTask(
-              id: widget.id,
-              taskTitle: titleController.text,
-              taskDesc: descController.text,
-              taskStatus: TaskStatus.unfinished,
-            ));
-            if (!mounted) return;
+          onPressed: () {
+            context.read<TodoBloc>().add(CreateTaskEvent(
+                  task: UserTask(
+                    id: widget.id,
+                    taskTitle: titleController.text,
+                    taskDesc: descController.text,
+                    taskStatus: TaskStatus.unfinished,
+                  ),
+                ));
             Navigator.of(context).pop();
           },
           child: const Text('Add'),
@@ -95,14 +93,15 @@ class _TaskDialogState extends State<TaskDialog> {
     }
     return [
       TextButton(
-        onPressed: () async {
-          await updateTask(UserTask(
-            id: widget.id,
-            taskTitle: titleController.text,
-            taskDesc: descController.text,
-            taskStatus: TaskStatus.unfinished,
-          ));
-          if (!mounted) return;
+        onPressed: () {
+          context.read<TodoBloc>().add(UpdateTaskEvent(
+                task: UserTask(
+                  id: widget.id,
+                  taskTitle: titleController.text,
+                  taskDesc: descController.text,
+                  taskStatus: TaskStatus.unfinished,
+                ),
+              ));
           Navigator.of(context).pop();
         },
         child: const Text('Update'),
