@@ -30,6 +30,7 @@ class _TodoTabViewState extends State<TodoTabView>
             .toList();
 
         return ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           itemBuilder: (context, index) {
             final todo = filteredTasks[index];
             return Slidable(
@@ -90,7 +91,7 @@ class _TodoTabViewState extends State<TodoTabView>
             );
           },
           separatorBuilder: (_, __) {
-            return const SizedBox(height: 10);
+            return const Divider(height: 10);
           },
           itemCount: filteredTasks.length,
         );
