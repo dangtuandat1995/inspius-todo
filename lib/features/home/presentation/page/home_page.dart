@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_firestore/core/shared_preferences/shared_preference_manager.dart';
 import 'package:todo_firestore/features/home/presentation/bloc/home_bloc.dart';
 import 'package:todo_firestore/features/home/presentation/provider/home_provider.dart';
 import 'package:todo_firestore/features/home/presentation/widgets/home_list_images.dart';
@@ -16,7 +17,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentPage = 0;
 
+  final localStorage = SharedPreferenceManager();
   final controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getInitCurrentPage();
+  }
 
   @override
   void dispose() {
@@ -31,7 +39,6 @@ class _HomePageState extends State<HomePage> {
         behavior: HitTestBehavior.opaque,
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
-
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
@@ -65,15 +72,20 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
-
           if (!currentFocus.hasPrimaryFocus) {
             currentFocus.unfocus();
           }
+
           context.read<HomeBloc>().add(GetImageInfoEvent(page: currentPage));
           currentPage++;
+          localStorage.setHomeRequestPage(currentPage);
         },
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<void> getInitCurrentPage() async {
+    currentPage = await localStorage.getHomeRequestPage();
   }
 }
