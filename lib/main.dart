@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:todo_firestore/core/dependency_injections/dependency_injections.dart';
 import 'package:todo_firestore/features/home/presentation/page/home_page.dart';
 import 'package:todo_firestore/features/home/presentation/provider/home_provider.dart';
+import 'package:todo_firestore/features/todo/presentation/bloc/todo_bloc.dart';
+import 'package:todo_firestore/features/todo/presentation/provider/todo_provider.dart';
 
 import 'features/home/presentation/bloc/home_bloc.dart';
 import 'firebase_options.dart';
@@ -31,6 +33,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => HomeProvider(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<TodoBloc>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TodoProvider(),
         ),
       ],
       builder: (context, child) {
