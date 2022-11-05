@@ -35,7 +35,7 @@ class _TodoTabViewState extends State<TodoTabView>
             final todo = filteredTasks[index];
             return Slidable(
               endActionPane: ActionPane(
-                extentRatio: 0.2,
+                extentRatio: 0.3,
                 motion: const BehindMotion(),
                 children: [
                   SlidableAction(
