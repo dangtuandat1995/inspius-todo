@@ -1,6 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_firestore/core/dependency_injections/dependency_injections.dart';
+import 'package:todo_firestore/features/home/presentation/page/home_page.dart';
+import 'package:todo_firestore/features/home/presentation/provider/home_provider.dart';
 
+import 'features/home/presentation/bloc/home_bloc.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -8,6 +14,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  configureDependencies();
 
   runApp(const MyApp());
 }
@@ -17,16 +24,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material App Bar'),
+    return MultiProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<HomeBloc>(),
         ),
-        body: const Center(
-          child: Text('Hello World'),
+        ChangeNotifierProvider(
+          create: (context) => HomeProvider(),
         ),
-      ),
+      ],
+      builder: (context, child) {
+        return const MaterialApp(
+          title: 'Inspius Assignment',
+          home: HomePage(),
+        );
+      },
     );
   }
 }
